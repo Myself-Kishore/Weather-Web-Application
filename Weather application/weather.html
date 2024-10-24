@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather app</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css>
+
+
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <link rel="shortcut icon" href="overcast.gif" type="image/x-icon" class="fevicon">
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgb(30, 25, 88), rgb(62, 18, 73), rgb(58, 48, 169), rgb(4, 4, 4));
+            overflow: hidden;
+            /* background-image: url("body.jpg"); */
+            background-size: cover;
+        }
+
+        .main {
+            margin: 40px auto;
+            border-radius: 10px;
+            display: flex;
+            box-shadow: 0px 0px 50px -1px black;
+            width: 1250px;
+            max-height: 90vh;
+            background-color: aliceblue;
+        }
+
+        .left {
+            width: 25%;
+            height: 90vh;
+            display: block;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(124, 217, 250);
+            border-radius: 10px 10px 10px 10px;
+            cursor: pointer;
+        }
+
+        .search {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+            width: 100%;
+        }
+
+        .search input {
+            padding: 10px;
+            outline: none;
+            border: none;
+            border-radius: 10px 0px 0px 10px;
+            font-size: 15px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .search input:hover {
+            box-shadow: 0px 0px 10px blue;
+            transition: box-shadow 0.5s ease;
+        }
+
+        .search button {
+            padding: 11px;
+            outline: none;
+            border: 0px;
+            border-radius: 0px 10px 10px 0px;
+            background-color: blue;
+            color: white;
+        }
+
+        .search button:hover {
+            background-color: rgb(10, 10, 122);
+        }
+
+        .temp-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            object-fit: cover;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .temp-icon img {
+            width: 150px;
+            height: 130px;
+            border-radius: 10px;
+            opacity: 1.0;
+            background: transparent;
+        }
+
+        .temp-icon img:hover {
+            transform: scale(1.1);
+            transition: transform 0.9s ease;
+        }
+
+        .main-temp {
+            margin-top: 10px;
+            display: block;
+            margin-left: 25px;
+            color: rgb(8, 8, 8);
+        }
+
+        .main-temp #m-temp {
+            font-size: 50px;
+            font-weight: 550;
+        }
+
+        .main-temp .date {
+            display: flex;
+            font-size: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 600;
+        }
+
+        .line {
+            width: 90%;
+            border: 2px solid rgb(245, 248, 250);
+            margin: 20px auto;
+        }
+
+        .top-boxes,
+        .down-boxes {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .top-boxes .content {
+            width: 120px;
+            height: 120px;
+            background-color: white;
+            margin: 10px;
+            margin-bottom: 10px;
+        }
+
+        .down-boxes .content {
+            width: 120px;
+            height: 120px;
+            background-color: white;
+            margin: 10px;
+        }
+
+        .content {
+            border-radius: 10px;
+            box-shadow: 0px 2px 16px rgb(7, 14, 14);
+        }
+
+        .content:hover {
+            transform: scale(1.1);
+            transition: transform 0.5s ease;
+        }
+
+        .content .title {
+            font-size: 15px;
+            font-weight: 500;
+            margin: 5px;
+        }
+
+        .content .body-content {
+            text-align: center;
+            margin: 30px auto;
+            font-size: 25px;
+            font-weight: 600;
+        }
+
+        .content .footer-content {
+            font-size: 14px;
+            font-weight: 300;
+            margin: -8px 8px;
+        }
+
+        .right {
+            background: linear-gradient(rgb(8, 177, 244), white);
+            width: 75%;
+            opacity: 1;
+            border-radius: 10px 10px 10px 10px;
+            border-left: 2px solid rgb(249, 247, 247);
+            cursor: pointer;
+            color: black;
+            animation-name: right_side;
+            animation-duration: 4s;
+            animation-iteration-count: 1;
+        }
+
+        @keyframes right_side {
+            0% {
+                width: 0%;
+            }
+
+            100% {
+                width: 75%;
+            }
+        }
+
+        .right:hover {
+            box-shadow: 0px 0px 10px -1px rgb(246, 249, 250);
+            transition: box-shadow 0.5s ease;
+        }
+
+        .right .right-top {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+            color: rgb(10, 10, 10);
+        }
+
+        .right-line {
+            width: 90%;
+            border: 2px solid rgb(252, 252, 252);
+            margin: 0 auto;
+        }
+
+        .right .week {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 10px 0;
+        }
+
+        .right .week-cards {
+            width: 100%;
+            display: flex;
+            overflow-x: scroll;
+        }
+
+        .card {
+            width: 230px;
+            height: 160px;
+            background-color: rgb(37, 115, 250);
+            margin: 5px;
+            padding: 2px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 1px solid;
+            color: white;
+            box-shadow: 0px 0px 10px -1px rgb(2, 2, 2);
+        }
+
+        .card:hover {
+            background: linear-gradient(135deg, rgb(10, 112, 245), rgb(12, 12, 45));
+            transition: background-color 0.8s ease;
+            color: rgb(250, 247, 247);
+        }
+
+        .right .week-cards::-webkit-scrollbar {
+            display: none;
+        }
+
+        .card img {
+            width: 50px;
+            height: 49px;
+            /* background-color: rgb(47, 40, 120); */
+            border-radius: 10px;
+            padding: 6px auto;
+            margin: 10px 15px 0;
+            border-radius: 50%;
+        }
+
+        .card img:hover {
+            transform: scale(1.3);
+            transition: transform 0.5s ease;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .card .discription {
+            text-align: center;
+            margin-top: -5px;
+        }
+
+        .card .right-tepm {
+            font-size: 19px;
+            font-weight: 600;
+            text-align: center;
+            margin: 2px auto;
+        }
+
+        .hour-report {
+            margin-top: 20px;
+            display: flex;
+            margin-left: 20px;
+            color: rgb(10, 9, 9);
+        }
+
+        .hour-report .h-line {
+            margin: 15px 20px;
+            width: 850px;
+            border: 2px solid rgb(249, 247, 247);
+        }
+
+        .hour-cards {
+            display: flex;
+            overflow-x: scroll;
+            margin: 13px 10px 0;
+            justify-content: space-between;
+        }
+
+        .hour-cards::-webkit-scrollbar {
+            display: none;
+        }
+
+        .h-cards {
+            border: 1px solid black;
+            width: 65px;
+            height: 85px;
+            background-color: rgb(248, 251, 250);
+            margin: 4px;
+            padding: 3px 10px;
+            border-radius: 10px;
+        }
+
+        .h-cards:hover {
+            transform: scale(0.99);
+            background-color: rgb(241, 247, 248);
+            transition: background-color 0.8s ease;
+            box-shadow: 0px 0px 10px rgb(102, 175, 243);
+        }
+
+        .h-cards,
+        .p-hour {
+            margin: 0px auto;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .h-cards img {
+            width: 30px;
+            height: 30px;
+            border-radius: 10px;
+            margin: 2px auto;
+        }
+
+        .h-cards img:hover {
+            transform: scale(1.2);
+            transition: transform 0.8 ease;
+        }
+
+        .h-cards,
+        .p-tepm {
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .hummi {
+            background-image: url("hummidity.gif");
+            background-size: cover;
+        }
+
+        .speed {
+            background-image: url("speed2.gif");
+            background-size: cover;
+            color: white;
+        }
+
+        .tt {
+            background-image: url("temp.gif");
+            background-size: cover;
+        }
+
+        .weth {
+            background-image: url("conditions.gif");
+            background-size: cover;
+            color: white;
+            background-position: center;
+        }
+
+        #date {
+            font-size: 19px;
+            font-weight: 600;
+        }
+
+        #city {
+            font-size: 35px;
+            font-weight: 700;
+            color: rgb(242, 242, 247);
+            text-transform: capitalize;
+        }
+
+        #dayn {
+            font-size: 14px;
+        }
+
+        #wind {
+            font-size: 35px;
+            color: black;
+            margin-top: 2px auto -2px;
+        }
+
+        #km {
+            margin-top: -17px;
+        }
+
+        .f-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px auto 0;
+            color: blue;
+        }
+
+        .f-title .l-line {
+            width: 30%;
+            border: 1px solid;
+        }
+
+        .f-title .r-line {
+            width: 30%;
+            border: 1px solid;
+        }
+
+        .f-title p {
+            padding: 0px 20px;
+            font-style: italic;
+        }
+
+        .mm-div {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .riha {
+            text-transform: capitalize;
+        }
+
+        .weekliyUpdate {
+            display: none;
+        }
+
+        .setWeekData {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .anil {
+            width: 95%;
+            height: 330px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px -5px black;
+            background: linear-gradient(rgb(104, 239, 129), rgb(6, 174, 241));
+        }
+
+        .anil:hover {
+            transform: scale(1.04);
+            transition: transform 1s ease-in-out;
+        }
+
+        .anil .h3 {
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: lighter;
+            font-size: 20px;
+            padding: 20px;
+        }
+
+        .setWeekData .left-sunrise {
+            display: block;
+            width: 40%;
+            margin-right: 50px;
+        }
+
+        .setWeekData .img-part {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .setWeekData .img-part img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .setWeekData .top-line {
+            width: 90%;
+            border: 2px solid rgb(243, 242, 247);
+            margin: 20px 0px 20px 40px;
+            border-radius: 10px;
+        }
+
+        .mid-line {
+            height: 250px;
+            border: 2px solid rgb(240, 240, 248);
+            border-radius: 10px;
+        }
+
+        .rise-data {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 10px auto;
+        }
+
+        .down-line {
+            width: 90%;
+            border: 2px solid rgb(241, 239, 248);
+            margin: 20px 0px 20px 40px;
+            border-radius: 10px;
+        }
+
+        .set-data {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 10px auto;
+            font-weight: lighter;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 17px;
+        }
+
+        .fiv {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .fiv img {
+            width: 30px;
+            height: 30px;
+            border-radius: 10px;
+            margin-top: 15px;
+            margin-left: 20px;
+            margin-right: -10px;
+        }
+
+        .img-part-duration {
+            display: block;
+            margin: 30px 10px;
+            font-weight: bolder;
+            font-size: 20px;
+        }
+
+        .description-date h3 {
+            margin: 10px;
+        }
+
+        .img-part img {
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="left">
+            <div class="search"> <input type="text" id="sinput" spellcheck="false" placeholder="Search..."> <button>
+                    <li class="fa fa-search" id="btn"></li>
+                </button> </div>
+            <div class="temp-icon"> <img src="fisty icon.gif" alt="" id="main-icon"> </div>
+            <div class="mm-div">
+                <div class="main-temp">
+                    <div id="m-temp">25°C</div>
+                    <div id="date"> Sunday , 24-09-2023 </div>
+                </div>
+            </div>
+            <div class="line"></div>
+            <div class="top-boxes">
+                <div class="content weth">
+                    <p class="title">Condition</p>
+                    <p class="body-content" id="cond">Clear</p>
+                    <p class="footer-content">Low</p>
+                </div>
+                <div class="content tt">
+                    <p class="title">Temperature</p>
+                    <p class="body-content" id="s-temp">27°C</p>
+                    <p class="footer-content">Normal</p>
+                </div>
+            </div>
+            <div class="down-boxes">
+                <div class="content hummi">
+                    <p class="title">Humidity</p>
+                    <p class="body-content" id="hum">50%</p>
+                    <p class="footer-content">Low</p>
+                </div>
+                <div class="content speed">
+                    <p class="title">Speed</p>
+                    <p class="body-content" id="wind">120</p>
+                    <p class="footer-content" id="km">km/h</p>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="right-top">
+                <h1 class="title riha" id="name"></h1>
+                <h1>
+                    <li class="fa fa-location-arrow" id="city">New Delhi</li>
+                </h1>
+                <div class="time">
+                    <h1 id="c-time">11:15:06 AM</h1>
+                </div>
+            </div>
+            <div class="right-line"></div>
+            <div class="week">
+                <div class="week-cards">
+                    <div class="card" id="card1">
+                        <h3 class="dayname" id="day-1">Sunday</h3> <img src="clear.png" id="week-icon1" class="c-img">
+                        <p class="right-tepm" id="t-1">25°C</p>
+                        <p class="discription" id="icon-1">Normal</p>
+                    </div>
+                    <div class="card" id="card2">
+                        <h3 class="dayname" id="day-2">Monday</h3> <img src="clear.png" id="week-icon2" class="c-img">
+                        <p class="right-tepm" id="t-2">25°C</p>
+                        <p class="discription" id="icon-2">Normal</p>
+                    </div>
+                    <div class="card" id="card3">
+                        <h3 class="dayname" id="day-3">Tuesday</h3> <img src="clear.png" id="week-icon3" class="c-img">
+                        <p class="right-tepm" id="t-3">25°C</p>
+                        <p class="discription" id="icon-3">Normal</p>
+                    </div>
+                    <div class="card" id="card4">
+                        <h3 class="dayname day-4" id="dayn">Wednesday</h3> <img src="clear.png" id="week-icon4"
+                            class="c-img">
+                        <p class="right-tepm" id="t-4">25°C</p>
+                        <p class="discription" id="icon-4">Normal</p>
+                    </div>
+                    <div class="card" id="card5">
+                        <h3 class="dayname" id="day-5">Thursday</h3> <img src="clear.png" id="week-icon5" class="c-img">
+                        <p class="right-tepm" id="t-5">25°C</p>
+                        <p class="discription" id="icon-5">Normal</p>
+                    </div>
+                    <div class="card" id="card6">
+                        <h3 class="dayname" id="day-6">Friday</h3> <img src="clear.png" id="week-icon6" class="c-img">
+                        <p class="right-tepm" id="t-6">25°C</p>
+                        <p class="discription" id="icon-6">Normal</p>
+                    </div>
+                    <div class="card" id="card7">
+                        <h3 class="dayname" id="day-7">Saturday</h3> <img src="clear.png" id="week-icon7" class="c-img">
+                        <p class="right-tepm" id="t-7">25°C</p>
+                        <p class="discription" id="icon-7">Normal</p>
+                    </div>
+                </div>
+            </div>
+            <div class="hour-report" id="Hourly_Report">
+                <h1> Hourly,Report <div class="h-line"></div>
+                </h1>
+            </div>
+            <div class="mainhourcontent" id="mainhouedata">
+                <div class="hour-container">
+                    <div class="hour-cards">
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-0">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-0">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-1">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-1">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-2">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-2">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-3">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-3">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-4">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-4">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-5">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-5">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-6">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-6">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-7">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-7">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd" id="h-crd">
+                            <p class="p-hour" id="h-8">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-8">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-9">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-9">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-10">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-10">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-11">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-11">25°C</p>
+                        </div>
+                    </div>
+                    <div class="hour-cards" id="removeHourData">
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-12">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-12">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-13">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-13">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-14">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-14">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-15">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-15">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-16">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-16">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-17">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-17">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-18">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-18">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-19">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-19">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-20">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-20">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-21">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-21">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-22">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-22">25°C</p>
+                        </div>
+                        <div class="h-cards" id="h-crd">
+                            <p class="p-hour" id="h-23">11:00</p> <img src="clear.png" alt="" class="c-img">
+                            <p class="p-temp" id="t-23">25°C</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="f-title">
+                    <div class="l-line"></div>O <p>❤️ Designed by Kishore Mada ❤️</p> O<div class="r-line"></div>
+                </div>
+            </div>
+            <div class="weekliyUpdate" id="weekliyUpdatedata">
+                <div class="anil">
+                    <div class="fiv"> <img src="main icon.gif">
+                        <h3 class="h3">SUNRISE/SUNSET</h3>
+                    </div>
+                    <div class="setWeekData">
+                        <div class="left-sunrise">
+                            <div class="img-part"> <img src="clear2.gif" alt="">
+                                <div class="img-part-duration">
+                                    <h3 id="nextDaycondition"></h3>
+                                </div>
+                            </div>
+                            <div class="top-line"></div>
+                            <div class="rise-data">
+                                <h3>Rise</h3>
+                                <h2 id="sunrise"></h2>
+                            </div>
+                            <div class="down-line"></div>
+                            <div class="set-data">
+                                <h3>Set</h3>
+                                <h2 id="sunset"></h2>
+                            </div>
+                        </div>
+                        <div class="mid-line"></div>
+                        <div class="right-sunrise">
+                            <div class="description-date">
+                                <h3 id="day1date"></h3>
+                                <h3 id="day1description"></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="weather.js">
+    </script>
+</body>
+
+</html>
